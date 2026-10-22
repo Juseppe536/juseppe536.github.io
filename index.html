@@ -88,9 +88,9 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .sec-head p{margin:0;color:var(--muted);max-width:46ch}
 
 /* category grid */
-.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media (max-width:900px){.cats{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.cats{grid-template-columns:1fr}}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:1000px){.cats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.cats{grid-template-columns:1fr}}
 .cat{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:168px;padding:18px;border-radius:14px;text-decoration:none;
   background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:border-color .2s,transform .2s}
 .cat::before{content:"";position:absolute;inset:0;background:var(--tone);opacity:.55;transition:opacity .3s}
@@ -98,7 +98,15 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .cat:hover{border-color:var(--gold);transform:translateY(-2px)}
 .cat:hover::before{opacity:.8}
 .cat > *{position:relative;z-index:1}
-.cat .meta{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:auto;position:absolute;top:16px;left:18px;right:18px;z-index:1}
+.cat .meta{display:flex;justify-content:space-between;align-items:flex-start;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:auto;position:absolute;top:16px;left:18px;right:18px;z-index:1}
+.cat{min-height:200px}
+.cat h3,.cat p{padding-right:44px}
+.cat .ico{width:46px;height:46px;color:var(--gold-hi);display:block}
+.cat .ico svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cat .ico .f{fill:currentColor;stroke:none}
+.cat .ico .d{opacity:.45}
+.cat .meta .side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.cat:hover .ico{color:#fff}
 .cat .meta .fmt{border:1px solid rgba(233,230,223,.25);border-radius:4px;padding:2px 6px;color:#d8d5ce}
 .cat h3{font-family:var(--display);font-weight:400;font-size:20px;margin:0 0 4px;line-height:1.15}
 .cat p{margin:0;font-size:14px;color:#bdbbb5}
@@ -266,10 +274,6 @@ const PORTFOLIO = [
     videos:[
       { link:"", title:"Пример: хайлайты стрима", desc:"Отбор моментов, мемы, звуковые эффекты, динамика" }
     ]},
-  { id:"color", title:"Цветокоррекция", short:"Готовые работы, до и после", fmt:"LOG › Rec.709", tone:"linear-gradient(135deg,#5c4520,#1a140a)",
-    videos:[
-      { link:"", title:"Пример: до и после", desc:"Первичная коррекция, баланс, look, работа с кожей" }
-    ]},
   { id:"grading", title:"Процесс цветокоррекции", short:"Как я работаю с цветом", fmt:"Color page", tone:"linear-gradient(135deg,#1f4a52,#0d1a1c)",
     videos:[
       { link:"", title:"Пример: разбор нод", desc:"Пошаговое построение дерева нод в DaVinci Resolve" }
@@ -291,6 +295,18 @@ const LESSONS = [
 ];
 /* ===================== конец настроек ===================== */
 
+
+/* --- иконки рубрик --- */
+const ICONS = {
+  vertical:`<svg viewBox="0 0 48 48"><rect x="4" y="10" width="12" height="22" rx="2.5" class="d"/><rect x="32" y="10" width="12" height="22" rx="2.5" class="d"/><rect x="15" y="5" width="18" height="34" rx="3"/><path class="f" d="M21.5 16.5v9l7-4.5z"/><path d="M21 35h6"/><path d="M24 44v-2M20 44h8" class="d"/></svg>`,
+  vlogs:`<svg viewBox="0 0 48 48"><path d="M6 40c6-1 9-6 14-6s7 4 12 2 6-8 6-12" stroke-dasharray="2.5 3.5" class="d"/><path d="M38 6a7 7 0 0 0-7 7c0 5.5 7 12 7 12s7-6.5 7-12a7 7 0 0 0-7-7z"/><circle cx="38" cy="13" r="2.4"/><rect x="3" y="26" width="15" height="10" rx="2"/><path d="M18 29l5-2.5v9L18 33"/><circle cx="10.5" cy="31" r="2.4"/></svg>`,
+  docs:`<svg viewBox="0 0 48 48"><rect x="5" y="9" width="38" height="30" rx="2"/><path d="M12 9v30M36 9v30"/><path class="f" d="M7.5 13h2v3h-2zM7.5 20h2v3h-2zM7.5 27h2v3h-2zM7.5 34h2v3h-2zM38.5 13h2v3h-2zM38.5 20h2v3h-2zM38.5 27h2v3h-2zM38.5 34h2v3h-2z"/><path d="M16 31l5-6 4 4 3-3 4 5" class="d"/><circle cx="29" cy="17" r="2.2" class="d"/></svg>`,
+  motion:`<svg viewBox="0 0 48 48"><path d="M6 38C14 38 14 10 24 10s10 28 18 28"/><path d="M6 38h6M42 38h-6" class="d"/><path class="f" d="M24 6.5l3.5 3.5-3.5 3.5-3.5-3.5z"/><circle cx="6" cy="38" r="2.6"/><circle cx="42" cy="38" r="2.6"/><path d="M14 22l-4 4M34 22l4 4" class="d"/><circle cx="9" cy="27" r="1.6" class="d"/><circle cx="39" cy="27" r="1.6" class="d"/></svg>`,
+  games:`<svg viewBox="0 0 48 48"><path d="M15 15h18a10 10 0 0 1 10 10v5a6 6 0 0 1-10.6 3.8L29 30H19l-3.4 3.8A6 6 0 0 1 5 30v-5a10 10 0 0 1 10-10z"/><path d="M14 20v7M10.5 23.5h7"/><circle cx="32" cy="21.5" r="1.7" class="f"/><circle cx="36" cy="25.5" r="1.7" class="f"/><path d="M21 9l3 3 3-3" class="d"/></svg>`,
+  grading:`<svg viewBox="0 0 48 48"><circle cx="10" cy="26" r="7.5"/><circle cx="24" cy="26" r="7.5"/><circle cx="38" cy="26" r="7.5"/><circle cx="12" cy="24" r="1.6" class="f"/><circle cx="23" cy="28.5" r="1.6" class="f"/><circle cx="36" cy="23.5" r="1.6" class="f"/><path d="M4 39h40" class="d"/><path d="M10 39v-2M24 39v-4M38 39v-3" /><path d="M6 12h36" stroke-dasharray="1 3" class="d"/></svg>`,
+  youtube:`<svg viewBox="0 0 48 48"><rect x="4" y="8" width="40" height="25" rx="4"/><path class="f" d="M20.5 14.5v12l10-6z"/><path d="M4 39h40" class="d"/><path d="M4 39h17"/><circle cx="21" cy="39" r="2.2" class="f"/></svg>`,
+  podcasts:`<svg viewBox="0 0 48 48"><rect x="18" y="5" width="12" height="22" rx="6"/><path d="M13 21a11 11 0 0 0 22 0"/><path d="M24 32v7M18 41h12"/><path d="M5 26v-2a6 6 0 0 1 4-5.6M43 26v-2a6 6 0 0 0-4-5.6" class="d"/><rect x="3" y="25" width="5" height="9" rx="2" class="d"/><rect x="40" y="25" width="5" height="9" rx="2" class="d"/></svg>`
+};
 const $ = s => document.querySelector(s);
 const app = $("#app");
 const esc = s => String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -365,7 +381,7 @@ function renderHome(scrollTo){
       <div class="cats">
         ${PORTFOLIO.map(c=>`
           <a class="cat" href="#${c.id}" data-cat="${c.id}" style="--tone:${c.tone}">
-            <div class="meta"><span>${c.videos.length} ${plural(c.videos.length)}</span><span class="fmt">${esc(c.fmt)}</span></div>
+            <div class="meta"><span class="ico" aria-hidden="true">${ICONS[c.id]||""}</span><span class="side"><span class="fmt">${esc(c.fmt)}</span><span>${c.videos.length} ${plural(c.videos.length)}</span></span></div>
             <h3>${esc(c.title)}</h3><p>${esc(c.short)}</p>
             <span class="go">${arrowR}</span>
           </a>`).join("")}
