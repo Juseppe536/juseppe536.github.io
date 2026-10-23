@@ -427,7 +427,7 @@ function thumbHTML(v, tone, badge){
     ${v.poster?`<img src="${esc(v.poster)}" alt="" loading="lazy">`:""}
     ${v.art&&ART[v.art]?`<span class="art" aria-hidden="true">${ART[v.art]}</span>`:""}
     ${badge&&!v.cover?`<span class="badge">${esc(badge)}</span>`:""}
-    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.cover.length<=9?" big":v.art?" mid":""}">${esc(v.cover)}</span></span>`:""}
+    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.art?" mid":""}">${esc(v.cover)}</span></span>`:""}
     <span class="play">${playIcon}</span>
     ${v.dur?`<span class="dur">${esc(v.dur)}</span>`:""}
     ${v.process?`<span class="dur pb">Процесс + результат</span>`:""}
