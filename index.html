@@ -141,6 +141,9 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .thumb .cv .chead::first-line{color:var(--gold-hi)}
 .thumb.has-cv .play{top:40%}
 .thumb .cv::before{content:"";position:absolute;left:14px;right:14px;top:14px;height:2px;background:linear-gradient(90deg,var(--gold) 0 30%,rgba(255,255,255,.25) 30%)}
+.thumb .art{position:absolute;inset:0;opacity:.55}
+.thumb .art svg{width:100%;height:100%;display:block}
+.thumb .cv .chead.big{font-size:clamp(40px,5vw,56px);letter-spacing:.02em}
 .card h4{margin:0;font-size:16px;font-weight:600;line-height:1.3}
 .card p{margin:0;font-size:14px;color:var(--muted)}
 .card ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted)}
@@ -320,13 +323,31 @@ const PORTFOLIO = [
 ];
 
 const LESSONS = [
-  { link:"", title:"Урок 1. Интерфейс DaVinci Resolve", desc:"Разбираем страницы программы, настраиваем проект и учимся быстро находить нужные инструменты", dur:"00:45" },
+  { link:"https://disk.yandex.ru/i/_KSpHJ8z0ysm0Q", art:"cut", tag:"Тизер урока", cover:"Cut", title:"Урок 1. Страница Cut в DaVinci Resolve", desc:"Как не допускать микропланов, как часто менять визуал в Reels и на YouTube, AI Smart Reframe, эффект Outer Stroke, монтаж в Full HD с рендером в 4K и плавный наезд для саспенса" },
   { link:"", title:"Урок 2. Монтаж на странице Edit", desc:"Склейки, горячие клавиши, работа с таймлайном и звуком", dur:"00:52" },
   { link:"", title:"Урок 3. Основы цветокоррекции", desc:"Ноды, скоупы, баланс белого и первый look", dur:"00:38" }
 ];
 /* ===================== конец настроек ===================== */
 
 
+
+/* --- рисованные обложки для уроков --- */
+const ART = {
+  cut:`<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+    <rect width="320" height="180" fill="#121317"/>
+    <rect x="8" y="8" width="150" height="84" rx="3" fill="#1c1e24"/><rect x="162" y="8" width="150" height="84" rx="3" fill="#1c1e24"/>
+    <rect x="18" y="18" width="130" height="64" fill="#2b3a4a"/><rect x="172" y="18" width="130" height="64" fill="#3a2f26"/>
+    <path d="M18 82l40-30 30 18 25-22 35 34z" fill="#3d5266"/><circle cx="270" cy="38" r="9" fill="#c9a24c" opacity=".5"/>
+    <rect x="8" y="98" width="304" height="10" rx="2" fill="#1c1e24"/>
+    ${[0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(i=>`<rect x="${12+i*21.5}" y="100" width="18" height="6" rx="1" fill="${["#3b5f8a","#4f7a52","#8a5a3b","#6b4f8a"][i%4]}"/>`).join("")}
+    <rect x="8" y="114" width="304" height="58" rx="2" fill="#17181c"/>
+    <rect x="12" y="120" width="70" height="16" rx="2" fill="#3b5f8a"/><rect x="84" y="120" width="96" height="16" rx="2" fill="#4f7a52"/><rect x="182" y="120" width="56" height="16" rx="2" fill="#8a5a3b"/><rect x="240" y="120" width="68" height="16" rx="2" fill="#3b5f8a"/>
+    <rect x="12" y="140" width="168" height="12" rx="2" fill="#2f5b4e"/><rect x="182" y="140" width="126" height="12" rx="2" fill="#2f5b4e"/>
+    <path d="M12 146q8-5 16 0t16 0 16 0 16 0 16 0 16 0 16 0 16 0 16 0 16 0" stroke="#5fae93" stroke-width="1" fill="none"/>
+    <rect x="12" y="156" width="296" height="10" rx="2" fill="#4a3b5c"/>
+    <rect x="181" y="96" width="2" height="76" fill="#e0bd6a"/><path d="M176 94h12l-6 6z" fill="#e0bd6a"/>
+  </svg>`
+};
 /* --- иконки рубрик --- */
 const ICONS = {
   vertical:`<svg viewBox="0 0 48 48"><rect x="4" y="10" width="12" height="22" rx="2.5" class="d"/><rect x="32" y="10" width="12" height="22" rx="2.5" class="d"/><rect x="15" y="5" width="18" height="34" rx="3"/><path class="f" d="M21.5 16.5v9l7-4.5z"/><path d="M21 35h6"/><path d="M24 44v-2M20 44h8" class="d"/></svg>`,
@@ -365,11 +386,12 @@ function resolveYandex(link){
 }
 
 function thumbHTML(v, tone, badge){
-  return `<button class="thumb${v.cover?" has-cv":""}" data-link="${esc(v.link)}" aria-label="Смотреть: ${esc(v.title)}">
+  return `<button class="thumb${v.cover?" has-cv":""}" data-link="${esc(v.link)}"${v.art?" data-noposter":""} aria-label="Смотреть: ${esc(v.title)}">
     <span class="ph" style="--tone:${tone};background:${tone}"></span>
     ${v.poster?`<img src="${esc(v.poster)}" alt="" loading="lazy">`:""}
-    ${badge?`<span class="badge">${esc(badge)}</span>`:""}
-    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead">${esc(v.cover)}</span></span>`:""}
+    ${v.art&&ART[v.art]?`<span class="art" aria-hidden="true">${ART[v.art]}</span>`:""}
+    ${badge&&!v.cover?`<span class="badge">${esc(badge)}</span>`:""}
+    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.cover.length<=6?" big":""}">${esc(v.cover)}</span></span>`:""}
     <span class="play">${playIcon}</span>
     ${v.dur?`<span class="dur">${esc(v.dur)}</span>`:""}
     ${v.process?`<span class="dur pb">Процесс + результат</span>`:""}
@@ -377,7 +399,7 @@ function thumbHTML(v, tone, badge){
 }
 function hydrateThumbs(root){
   root.querySelectorAll(".thumb[data-link]").forEach(t=>{
-    const link=t.dataset.link; if(!link || t.querySelector("img")) return;
+    const link=t.dataset.link; if(!link || t.hasAttribute("data-noposter") || t.querySelector("img")) return;
     resolveYandex(link).then(r=>{
       if(r && r.poster){ const img=new Image(); img.alt=""; img.decoding="async"; img.onload=()=>t.insertBefore(img,t.querySelector(".cv")||t.querySelector(".play")); img.src=r.poster; }
     });
