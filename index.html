@@ -176,6 +176,8 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .icon-btn:hover{border-color:var(--gold);color:var(--gold-hi)}
 .icon-btn svg{width:18px;height:18px}
 .stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.stage iframe.embed{width:min(100%,1100px);aspect-ratio:16/9;max-height:100%;border:0;border-radius:10px;background:#000}
+.stage iframe.embed.v{width:auto;height:100%;aspect-ratio:9/16}
 .stage video,.stage .ph-big{max-width:100%;max-height:100%;border-radius:10px;background:#000}
 .stage .ph-big{position:relative;aspect-ratio:16/9;width:min(100%,1100px);display:grid;place-items:center;text-align:center;padding:24px;overflow:hidden}
 .stage .ph-big.v{aspect-ratio:9/16;width:auto;height:100%;max-height:78vh}
@@ -314,7 +316,7 @@ const PORTFOLIO = [
       { link:"https://disk.yandex.ru/i/ng5wAbvtb6z9Ww", tag:"IT · EN", cover:"Функции Windows", title:"Видео для сисадмина", desc:"Работа с зеленым фоном, моушн-анимация, нарезка материала, чистка звука, звуковые эффекты" },
       { link:"https://disk.yandex.ru/i/p7bjrBKddl_xPA", tag:"Техника · EN", cover:"Как камера видит цвет", title:"Видео про видеокамеры", desc:"Визуальная концепция, цветокоррекция LOG-материала, моушн-анимация, подбор футажей, чистка звука, музыка и звуковые эффекты" },
       { link:"https://disk.yandex.ru/i/hJH8Faqyc7v6Iw", tag:"Научпоп", cover:"Древесина: добыча и применение", title:"Научпоп про древесину", desc:"Разработка стиля, подбор кадров, цветокоррекция, моушн-анимация, звуковой дизайн" },
-      { link:"https://disk.yandex.ru/i/XFF5kPn7N-Gwag", tag:"Нейросети · EN", cover:"Как пользоваться нейросетью", title:"Видео про нейросеть", desc:"Визуальная концепция, цветокоррекция, ротоскопинг, переходы, моушн-анимация, звуковой дизайн" }
+      { link:"https://drive.google.com/file/d/1aG-hrk_2lFHe6xB0Yv54dYuEdzfm2_mu/view", tag:"Нейросети · EN", cover:"Как пользоваться нейросетью", title:"Видео про нейросеть", desc:"Визуальная концепция, цветокоррекция, ротоскопинг, переходы, моушн-анимация, звуковой дизайн" }
     ]},
   { id:"podcasts", bg:"img/podcasts.jpg", title:"Подкасты", short:"Многокамерный монтаж", fmt:"Multicam", tone:"linear-gradient(135deg,#3d3524,#14120d)",
     videos:[
@@ -408,6 +410,8 @@ const cache = new Map();
 function resolveYandex(link){
   if(!link) return Promise.resolve(null);
   if(cache.has(link)) return cache.get(link);
+  const gd = link.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{10,})/);
+  if(gd){ const r={ poster:`https://drive.google.com/thumbnail?id=${gd[1]}&sz=w1200`, embed:`https://drive.google.com/file/d/${gd[1]}/preview` }; const p=Promise.resolve(r); cache.set(link,p); return p; }
   const api = "https://cloud-api.yandex.net/v1/disk/public/resources";
   const p = (async () => {
     const key = encodeURIComponent(link);
@@ -557,7 +561,10 @@ async function show(){
   if(!link) return;
   const my=idx, myMode=mode, r=await resolveYandex(link);
   if(my!==idx || myMode!==mode || viewer.hidden) return;
-  if(r && r.src){
+  if(r && r.embed){
+    stage.innerHTML = `<iframe class="embed${isVert?" v":""}" src="${esc(r.embed)}" allow="autoplay; fullscreen" allowfullscreen></iframe>` + arrows;
+    bindArrows();
+  } else if(r && r.src){
     stage.innerHTML = `<video src="${esc(r.src)}" ${r.poster?`poster="${esc(r.poster)}"`:""} controls autoplay playsinline></video>` + arrows;
     bindArrows();
   } else {
