@@ -120,7 +120,7 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .cat:hover .go{background:var(--gold);color:#16120a}
 
 /* video cards */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:18px}
 .grid.vert{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
 .card{display:flex;flex-direction:column;gap:10px;min-width:0}
 .thumb{position:relative;display:block;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--panel-2);cursor:pointer;padding:0;color:inherit;font:inherit}
@@ -139,8 +139,8 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .thumb .cv .ctag{position:absolute;top:26px;left:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#16120a;background:var(--gold);padding:3px 7px;border-radius:4px}
 .thumb .cv .chead{font-family:var(--display);font-size:clamp(17px,1.6vw,22px);line-height:1.08;color:#fff;text-wrap:balance;text-shadow:0 1px 2px rgba(0,0,0,.8),0 2px 14px rgba(0,0,0,.7)}
 .thumb .cv .chead::first-line{color:var(--gold-hi)}
-.thumb.has-cv .play{top:40%}
-.vert .thumb.has-cv .play{top:50%}
+.thumb.has-cv .play{top:50%;width:40px;height:40px;margin:-20px 0 0 -20px}
+.thumb.has-cv .play svg{width:15px;height:15px;margin-left:2px}
 .thumb .cv::before{content:"";position:absolute;left:14px;right:14px;top:14px;height:2px;background:linear-gradient(90deg,var(--gold) 0 30%,rgba(255,255,255,.25) 30%)}
 .thumb .art{position:absolute;inset:0;opacity:.55}
 .thumb .art svg{width:100%;height:100%;display:block}
