@@ -288,7 +288,7 @@ const PORTFOLIO = [
       { link:"https://drive.google.com/file/d/1RK0xh2mZoIytfdQ50alQJ3vcl7Ka3r7l/view", tag:"Шоурил", cover:"Моушен-анимация", title:"Шоурил моушен-анимации", desc:"Подборка моих работ по моушен-анимации" },
       { link:"https://drive.google.com/file/d/10CTIJlMuq_JXKuhCQxDtiIzQoQpOvAFQ/view", tag:"YouTube-канал", cover:"Школьная доска", title:"Школьная доска", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
       { link:"https://drive.google.com/file/d/1DyB5ic-UF1QMrFpHQaoKQJnffDkE5z1A/view", tag:"YouTube-канал", cover:"Анимация комикса", title:"Анимация комикса", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
-      { link:"https://disk.yandex.ru/i/67d0KO6HRFiiAA", tag:"YouTube-канал", cover:"Таймлайн и блокнот", title:"Таймлайн и блокнот", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
+      { link:"https://drive.google.com/file/d/1PvyODqDQXKza_jquIs_WBhk5mZY00ta4/view", tag:"YouTube-канал", cover:"Таймлайн и блокнот", title:"Таймлайн и блокнот", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
       { link:"https://drive.google.com/file/d/1hGkxxsKfJaxQNzrSTRLSkMx8TplleAzk/view", tag:"YouTube-канал", cover:"Анимация стикеров", title:"Анимация стикеров", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
       { link:"https://drive.google.com/file/d/1p5EYNtgpXWDIWFZN5VqWI1xLkl1lxFy0/view", tag:"YouTube-канал", cover:"Анимация чек-листа", title:"Анимация чек-листа", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
       { link:"https://drive.google.com/file/d/1zh9lsiHyLsiMjU30pRX04dEGPs9vCBMy/view", tag:"YouTube-канал", cover:"Речевые баблы и занавес", title:"Речевые баблы и занавес", desc:"Моушен-анимация графики для YouTube-канала «Правое полушарие интроверта»" },
@@ -410,6 +410,7 @@ const cache = new Map();
 function resolveYandex(link){
   if(!link) return Promise.resolve(null);
   if(cache.has(link)) return cache.get(link);
+  if(!/^https?:/i.test(link)){ const p=Promise.resolve({src:link, poster:null}); cache.set(link,p); return p; }
   const gd = link.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{10,})/);
   if(gd){ const r={ poster:`https://drive.google.com/thumbnail?id=${gd[1]}&sz=w1200`, embed:`https://drive.google.com/file/d/${gd[1]}/preview` }; const p=Promise.resolve(r); cache.set(link,p); return p; }
   const api = "https://cloud-api.yandex.net/v1/disk/public/resources";
