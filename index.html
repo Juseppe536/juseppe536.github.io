@@ -323,9 +323,9 @@ const PORTFOLIO = [
 ];
 
 const LESSONS = [
-  { link:"https://disk.yandex.ru/i/_KSpHJ8z0ysm0Q", art:"cut", tag:"Тизер урока", cover:"Cut", title:"Урок 1. Страница Cut в DaVinci Resolve", desc:"Как не допускать микропланов, как часто менять визуал в Reels и на YouTube, AI Smart Reframe, эффект Outer Stroke, монтаж в Full HD с рендером в 4K и плавный наезд для саспенса" },
-  { link:"", title:"Урок 2. Монтаж на странице Edit", desc:"Склейки, горячие клавиши, работа с таймлайном и звуком", dur:"00:52" },
-  { link:"", title:"Урок 3. Основы цветокоррекции", desc:"Ноды, скоупы, баланс белого и первый look", dur:"00:38" }
+  { link:"https://disk.yandex.ru/i/_KSpHJ8z0ysm0Q", art:"cut", tag:"Тизер урока", cover:"Cut", title:"Урок 1. Страница Cut в DaVinci Resolve" },
+  { link:"", title:"Урок 2. Монтаж на странице Edit", dur:"00:52" },
+  { link:"", title:"Урок 3. Основы цветокоррекции", dur:"00:38" }
 ];
 /* ===================== конец настроек ===================== */
 
@@ -446,11 +446,11 @@ function renderHome(scrollTo){
       <div class="learn">
         <div class="sec-head">
           <div><div class="tc">Обучение монтажу</div><h2>Уроки по DaVinci Resolve</h2></div>
-          <p>Короткие фрагменты из уроков. Под каждым написано, что в нем разбирается.</p>
+          <p>Короткие фрагменты из моих уроков по DaVinci Resolve</p>
         </div>
         <div class="grid">
           ${LESSONS.map((v,i)=>`<div class="card">${thumbHTML(v,"linear-gradient(135deg,#4b3a1a,#15120b)","Тизер")}
-            <h4>${esc(v.title)}</h4><p>${esc(v.desc)}</p></div>`).join("")}
+            <h4>${esc(v.title)}</h4>${v.desc?`<p>${esc(v.desc)}</p>`:""}</div>`).join("")}
         </div>
         <div class="cta">
           <p>Хотите разобраться в монтаже и цветокоррекции с нуля или подтянуть конкретную тему? Напишите, расскажу про формат занятий.</p>
