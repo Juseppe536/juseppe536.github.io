@@ -143,7 +143,7 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .thumb .cv::before{content:"";position:absolute;left:14px;right:14px;top:14px;height:2px;background:linear-gradient(90deg,var(--gold) 0 30%,rgba(255,255,255,.25) 30%)}
 .thumb .art{position:absolute;inset:0;opacity:.55}
 .thumb .art svg{width:100%;height:100%;display:block}
-.thumb .cv .chead.big{font-size:clamp(40px,5vw,56px);letter-spacing:.02em}
+.thumb .cv .chead.big{font-size:clamp(34px,3.6vw,50px);letter-spacing:.02em}
 .card h4{margin:0;font-size:16px;font-weight:600;line-height:1.3}
 .card p{margin:0;font-size:14px;color:var(--muted)}
 .card ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted)}
@@ -324,7 +324,7 @@ const PORTFOLIO = [
 
 const LESSONS = [
   { link:"https://disk.yandex.ru/i/_KSpHJ8z0ysm0Q", art:"cut", tag:"Тизер урока", cover:"Cut", title:"Урок 1. Страница Cut в DaVinci Resolve" },
-  { link:"", title:"Урок 2. Монтаж на странице Edit", dur:"00:52" },
+  { link:"", art:"inspector", tag:"Тизер урока", cover:"Inspector", title:"Урок 2. Инспектор и B-roll" },
   { link:"", title:"Урок 3. Основы цветокоррекции", dur:"00:38" }
 ];
 /* ===================== конец настроек ===================== */
@@ -333,6 +333,23 @@ const LESSONS = [
 
 /* --- рисованные обложки для уроков --- */
 const ART = {
+  inspector:`<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+    <rect width="320" height="180" fill="#121317"/>
+    <rect x="8" y="8" width="190" height="104" rx="3" fill="#1c1e24"/>
+    <rect x="18" y="16" width="170" height="88" fill="#2a2f3a"/>
+    <rect x="58" y="30" width="90" height="62" fill="#3d5266" stroke="#e0bd6a" stroke-width="1.2" stroke-dasharray="3 2"/>
+    <path d="M58 92l28-24 20 12 18-14 24 26z" fill="#4e6b84"/><circle cx="128" cy="44" r="6" fill="#c9a24c" opacity=".55"/>
+    <rect x="55" y="27" width="6" height="6" fill="#e0bd6a"/><rect x="145" y="27" width="6" height="6" fill="#e0bd6a"/><rect x="55" y="89" width="6" height="6" fill="#e0bd6a"/><rect x="145" y="89" width="6" height="6" fill="#e0bd6a"/>
+    <rect x="204" y="8" width="108" height="104" rx="3" fill="#1c1e24"/>
+    <rect x="210" y="14" width="96" height="9" rx="2" fill="#2b2d34"/><rect x="214" y="17" width="36" height="3" rx="1" fill="#8e9097"/>
+    ${[0,1,2,3,4,5].map(i=>`<rect x="212" y="${32+i*13}" width="26" height="3" rx="1" fill="#6c6e75"/><rect x="244" y="${33+i*13}" width="58" height="1.5" fill="#3a3c43"/><circle cx="${250+((i*23)%48)}" cy="${33.8+i*13}" r="2.6" fill="#e0bd6a"/>`).join("")}
+    <rect x="8" y="118" width="304" height="54" rx="2" fill="#17181c"/>
+    <rect x="96" y="123" width="62" height="13" rx="2" fill="#8a5a3b" stroke="#e0bd6a" stroke-width="1"/><rect x="214" y="123" width="48" height="13" rx="2" fill="#8a5a3b"/>
+    <rect x="12" y="139" width="296" height="13" rx="2" fill="#3b5f8a"/>
+    <rect x="12" y="155" width="296" height="12" rx="2" fill="#2f5b4e"/>
+    <path d="M12 161q6-4 12 0t12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0 12 0" stroke="#5fae93" stroke-width="1" fill="none"/>
+    <rect x="95" y="116" width="2" height="56" fill="#e0bd6a"/><path d="M90 114h12l-6 6z" fill="#e0bd6a"/>
+  </svg>`,
   cut:`<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
     <rect width="320" height="180" fill="#121317"/>
     <rect x="8" y="8" width="150" height="84" rx="3" fill="#1c1e24"/><rect x="162" y="8" width="150" height="84" rx="3" fill="#1c1e24"/>
@@ -391,7 +408,7 @@ function thumbHTML(v, tone, badge){
     ${v.poster?`<img src="${esc(v.poster)}" alt="" loading="lazy">`:""}
     ${v.art&&ART[v.art]?`<span class="art" aria-hidden="true">${ART[v.art]}</span>`:""}
     ${badge&&!v.cover?`<span class="badge">${esc(badge)}</span>`:""}
-    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.cover.length<=6?" big":""}">${esc(v.cover)}</span></span>`:""}
+    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.cover.length<=9?" big":""}">${esc(v.cover)}</span></span>`:""}
     <span class="play">${playIcon}</span>
     ${v.dur?`<span class="dur">${esc(v.dur)}</span>`:""}
     ${v.process?`<span class="dur pb">Процесс + результат</span>`:""}
