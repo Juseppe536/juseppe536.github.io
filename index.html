@@ -143,6 +143,7 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .thumb .cv::before{content:"";position:absolute;left:14px;right:14px;top:14px;height:2px;background:linear-gradient(90deg,var(--gold) 0 30%,rgba(255,255,255,.25) 30%)}
 .thumb .art{position:absolute;inset:0;opacity:.55}
 .thumb .art svg{width:100%;height:100%;display:block}
+.thumb .cv .chead.mid{font-size:clamp(28px,2.9vw,40px);letter-spacing:.01em}
 .thumb .cv .chead.big{font-size:clamp(34px,3.6vw,50px);letter-spacing:.02em}
 .card h4{margin:0;font-size:16px;font-weight:600;line-height:1.3}
 .card p{margin:0;font-size:14px;color:var(--muted)}
@@ -325,7 +326,7 @@ const PORTFOLIO = [
 const LESSONS = [
   { link:"https://disk.yandex.ru/i/_KSpHJ8z0ysm0Q", art:"cut", tag:"Тизер урока", cover:"Cut", title:"Урок 1. Страница Cut в DaVinci Resolve" },
   { link:"", art:"inspector", tag:"Тизер урока", cover:"Inspector", title:"Урок 2. Инспектор и B-roll" },
-  { link:"", title:"Урок 3. Основы цветокоррекции", dur:"00:38" }
+  { link:"https://disk.yandex.ru/i/hxcA4PBZFi4tbA", art:"sokolov", tag:"Тизер урока", cover:"10 принципов", title:"Урок 3. 10 принципов монтажа по Соколову" }
 ];
 /* ===================== конец настроек ===================== */
 
@@ -333,6 +334,23 @@ const LESSONS = [
 
 /* --- рисованные обложки для уроков --- */
 const ART = {
+  sokolov:`<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+    <rect width="320" height="180" fill="#121317"/>
+    ${[["#3d5266",14,"Общий"],["#4f6a52",26,"Средний"],["#7a5a3b",40,"Крупный"],["#3d5266",14,"Общий"]].map((f,i)=>{const x=10+i*77;return `<rect x="${x}" y="12" width="70" height="44" rx="2" fill="#1f2128"/><rect x="${x+3}" y="15" width="64" height="38" fill="#2a2f3a"/><circle cx="${x+35}" cy="${42-f[1]*.35}" r="${f[1]*.32}" fill="${f[0]}"/><rect x="${x+35-f[1]*.4}" y="${42}" width="${f[1]*.8}" height="${11}" fill="${f[0]}"/><rect x="${x}" y="60" width="${18+i*3}" height="3" rx="1" fill="#6c6e75"/>`}).join("")}
+    <path d="M45 75h77M122 75h77M199 75h77" stroke="#e0bd6a" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <rect x="10" y="92" width="146" height="78" rx="2" fill="#1f2128"/>
+    <path d="M20 160h126" stroke="#6c6e75" stroke-width="1"/>
+    <path d="M83 100v62" stroke="#e0bd6a" stroke-width="1.4"/><path d="M78 104l5-6 5 6" stroke="#e0bd6a" stroke-width="1.4" fill="none"/>
+    <circle cx="52" cy="122" r="7" fill="#4f6a52"/><circle cx="114" cy="122" r="7" fill="#7a5a3b"/>
+    <path d="M60 122h22M106 122h-22" stroke="#8e9097" stroke-width="1" stroke-dasharray="2 2"/>
+    <rect x="164" y="92" width="70" height="78" rx="2" fill="#2b3240"/>
+    <circle cx="199" cy="116" r="10" fill="#c9a24c" opacity=".7"/>
+    <rect x="176" y="138" width="46" height="26" fill="#3d4656"/><rect x="184" y="144" width="10" height="10" fill="#c9a24c" opacity=".5"/>
+    <rect x="242" y="92" width="70" height="78" rx="2" fill="#141824"/>
+    <path d="M284 108a10 10 0 1 0 6 16 8 8 0 1 1-6-16z" fill="#8e9097"/>
+    <rect x="254" y="138" width="46" height="26" fill="#252b38"/><rect x="262" y="144" width="10" height="10" fill="#e0bd6a" opacity=".35"/>
+    <path d="M236 131l4-4 4 4M236 131l4 4 4-4" stroke="#d0453a" stroke-width="1.5" fill="none"/>
+  </svg>`,
   inspector:`<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
     <rect width="320" height="180" fill="#121317"/>
     <rect x="8" y="8" width="190" height="104" rx="3" fill="#1c1e24"/>
@@ -408,7 +426,7 @@ function thumbHTML(v, tone, badge){
     ${v.poster?`<img src="${esc(v.poster)}" alt="" loading="lazy">`:""}
     ${v.art&&ART[v.art]?`<span class="art" aria-hidden="true">${ART[v.art]}</span>`:""}
     ${badge&&!v.cover?`<span class="badge">${esc(badge)}</span>`:""}
-    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.cover.length<=9?" big":""}">${esc(v.cover)}</span></span>`:""}
+    ${v.cover?`<span class="cv"><span class="ctag">${esc(v.tag||"")}</span><span class="chead${v.cover.length<=9?" big":v.art?" mid":""}">${esc(v.cover)}</span></span>`:""}
     <span class="play">${playIcon}</span>
     ${v.dur?`<span class="dur">${esc(v.dur)}</span>`:""}
     ${v.process?`<span class="dur pb">Процесс + результат</span>`:""}
