@@ -322,9 +322,9 @@ const PORTFOLIO = [
     ]},
   { id:"podcasts", bg:"img/podcasts.jpg", title:"Подкасты", short:"Многокамерный монтаж", fmt:"Multicam", tone:"linear-gradient(135deg,#3d3524,#14120d)",
     videos:[
-      { link:"https://drive.google.com/file/d/1UL-gKxDJ-Mk1ygOOhU6mpNl34Xd84ps0/view", tag:"Подкаст", cover:"Заменят ли роботы горничных?", title:"Подкаст про роботов в отелях", desc:"Монтаж тизера, подбор ярких моментов, нарезка, чистка от слов-паразитов, оговорок и разговоров не по теме, цветокоррекция, обработка звука" },
-      { link:"https://drive.google.com/file/d/1kh0ZF4FNlzWxzRDxVGhouiyO0m_mt7ee/view", tag:"Podcast · EN", cover:"Эзотерика", title:"Подкаст про эзотерику", desc:"Мультикамерный монтаж, нарезка, цветокоррекция, чистка звука, тайминги для сниппета" },
-      { link:"https://drive.google.com/file/d/1ZSu5Mi2OJmomtD3rRXqF2Tqns5bUnR9r/view", tag:"Подкаст", cover:"KPI в компаниях", title:"Подкаст про KPI", desc:"Мультикамерный монтаж, нарезка, цветокоррекция, чистка звука, звуковой дизайн, легкая моушн-анимация, подбор шрифта, тайминги для сниппета" }
+      { link:"https://kinescope.io/qweTbM97TPcB8oHqsKcj9E", tag:"Подкаст", cover:"Заменят ли роботы горничных?", title:"Подкаст про роботов в отелях", desc:"Монтаж тизера, подбор ярких моментов, нарезка, чистка от слов-паразитов, оговорок и разговоров не по теме, цветокоррекция, обработка звука" },
+      { link:"https://kinescope.io/2rMBRsDvBGuyk8XfxWn4yE", tag:"Podcast · EN", cover:"Эзотерика", title:"Подкаст про эзотерику", desc:"Мультикамерный монтаж, нарезка, цветокоррекция, чистка звука, тайминги для сниппета" },
+      { link:"https://kinescope.io/75AJPzSq6XyTVHcduFCuaR", tag:"Подкаст", cover:"KPI в компаниях", title:"Подкаст про KPI", desc:"Мультикамерный монтаж, нарезка, цветокоррекция, чистка звука, звуковой дизайн, легкая моушн-анимация, подбор шрифта, тайминги для сниппета" }
     ]}
 ];
 
@@ -413,6 +413,8 @@ function resolveYandex(link){
   if(!link) return Promise.resolve(null);
   if(cache.has(link)) return cache.get(link);
   if(!/^https?:/i.test(link)){ const p=Promise.resolve({src:link, poster:null}); cache.set(link,p); return p; }
+  const ks = link.match(/kinescope\.io\/(?:embed\/)?([A-Za-z0-9]{10,})/);
+  if(ks){ const r={ poster:`https://kinescope.io/${ks[1]}/poster.jpg`, embed:`https://kinescope.io/embed/${ks[1]}` }; const p=Promise.resolve(r); cache.set(link,p); return p; }
   const gd = link.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^#]*&)?id=)([\w-]{10,})/);
   if(gd){ const r={ poster:`https://drive.google.com/thumbnail?id=${gd[1]}&sz=w1200`, embed:`https://drive.google.com/file/d/${gd[1]}/preview` }; const p=Promise.resolve(r); cache.set(link,p); return p; }
   const api = "https://cloud-api.yandex.net/v1/disk/public/resources";
@@ -565,7 +567,7 @@ async function show(){
   const my=idx, myMode=mode, r=await resolveYandex(link);
   if(my!==idx || myMode!==mode || viewer.hidden) return;
   if(r && r.embed){
-    stage.innerHTML = `<iframe class="embed${isVert?" v":""}" src="${esc(r.embed)}" allow="autoplay; fullscreen" allowfullscreen></iframe>` + arrows;
+    stage.innerHTML = `<iframe class="embed${isVert?" v":""}" src="${esc(r.embed)}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; screen-wake-lock" allowfullscreen></iframe>` + arrows;
     bindArrows();
   } else if(r && r.src){
     stage.innerHTML = `<video src="${esc(r.src)}" ${r.poster?`poster="${esc(r.poster)}"`:""} controls autoplay playsinline></video>` + arrows;
