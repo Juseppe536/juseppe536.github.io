@@ -561,14 +561,15 @@ async function show(){
   $("#v-count").textContent=`${String(idx+1).padStart(2,"0")} / ${String(list.length).padStart(2,"0")}`;
   $("#v-title").textContent=v.title; $("#v-desc").textContent=v.desc||"";
   const arrows = list.length>1?`<button class="arrow prev" aria-label="Предыдущее видео"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><button class="arrow next" aria-label="Следующее видео"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>`:"";
-  const placeholder = msg => `<div class="ph-big ${isVert?"v":""}"><div class="bg" style="background:${tone}"></div><div class="msg"><b>${esc(v.title)}</b>${msg}</div></div>`;
+  const vv = mode==="process"&&v.process ? !!v.processVert : isVert;
+  const placeholder = msg => `<div class="ph-big ${vv?"v":""}"><div class="bg" style="background:${tone}"></div><div class="msg"><b>${esc(v.title)}</b>${msg}</div></div>`;
   stage.innerHTML = (link?placeholder("Загружаю видео…"):placeholder("Здесь будет видео. Вставьте ссылку на Яндекс Диск в настройках сайта.")) + arrows;
   bindArrows();
   if(!link) return;
   const my=idx, myMode=mode, r=await resolveYandex(link);
   if(my!==idx || myMode!==mode || viewer.hidden) return;
   if(r && r.embed){
-    stage.innerHTML = `<iframe class="embed${isVert?" v":""}" src="${esc(r.embed)}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; screen-wake-lock" allowfullscreen></iframe>` + arrows;
+    stage.innerHTML = `<iframe class="embed${vv?" v":""}" src="${esc(r.embed)}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; screen-wake-lock" allowfullscreen></iframe>` + arrows;
     bindArrows();
   } else if(r && r.src){
     stage.innerHTML = `<video src="${esc(r.src)}" ${r.poster?`poster="${esc(r.poster)}"`:""} controls autoplay playsinline></video>` + arrows;
