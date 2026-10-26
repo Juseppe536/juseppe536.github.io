@@ -220,7 +220,7 @@ footer{border-top:1px solid var(--line);margin-top:30px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;color:var(--muted);font-size:14px}
 
 /* --- телефон: компактная сетка рубрик --- */
-.cat .cnt,.cat.learn-tile{display:none}
+.cat .cnt{display:none}
 @media (max-width:640px){
  .hero{padding-block:24px 4px}
  .hero .strip{display:none}
@@ -237,9 +237,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
  .cat .meta,.cat p,.cat .go{display:none}
  .cat h3{font-size:15px;white-space:normal;padding-right:0}
  .cat .cnt{display:block;font-family:var(--mono);font-size:10px;color:#b9b6ae;letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
- .cat.learn-tile{display:flex;grid-column:span 2;min-height:80px;border-color:var(--gold)}
- .cat.learn-tile::before{background:linear-gradient(135deg,#4b3a1a,#15120b);opacity:.9}
- .cat.learn-tile h3{color:var(--gold-hi)}
 }
 </style>
 </head>
@@ -525,7 +522,6 @@ function renderHome(scrollTo){
             <h3>${esc(c.title)}</h3><div class="cnt">${c.videos.length} ${plural(c.videos.length)}</div><p>${esc(c.short)}</p>
             <span class="go">${arrowR}</span>
           </a>`).join("")}
-          <a class="cat learn-tile" href="#learn" data-home><h3>Обучение монтажу →</h3><div class="cnt">курс DaVinci Resolve · 12 уроков</div></a>
       </div>
     </section>
 
