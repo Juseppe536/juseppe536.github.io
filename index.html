@@ -60,6 +60,9 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
 .btn:hover{box-shadow:0 0 24px rgba(201,162,76,.45);transform:translateY(-1px)}
 .btn svg{width:16px;height:16px;flex:none}
 .btn.ghost{background:transparent;color:var(--gold-hi)}
+.btn.outline{background:transparent;color:#fff;border-color:var(--gold)}
+.btn.outline:hover{background:rgba(201,162,76,.12);color:#fff}
+.cta-btns{display:flex;flex-wrap:wrap;gap:10px}
 .btn.ghost:hover{background:rgba(201,162,76,.1)}
 :focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
 @media (max-width:640px){.brand span,.nav a.link{display:none}.btn .long{display:none}}
@@ -512,8 +515,11 @@ function renderHome(scrollTo){
             <h4>${esc(v.title)}</h4>${v.desc?`<p>${esc(v.desc)}</p>`:""}</div>`).join("")}
         </div>
         <div class="cta">
-          <p>Хотите разобраться в монтаже и цветокоррекции с нуля или подтянуть конкретную тему? Напишите, расскажу про формат занятий.</p>
-          <a class="btn" href="https://t.me/${TELEGRAM}" target="_blank" rel="noopener">${tgIcon}Записаться на обучение</a>
+          <p>Индивидуальный курс: 12 уроков с личными созвонами, от интерфейса до цветокоррекции, звука и рендера</p>
+          <div class="cta-btns">
+            <a class="btn" href="course.html">Программа и цены</a>
+            <a class="btn outline" href="https://t.me/${TELEGRAM}" target="_blank" rel="noopener">${tgIcon}Записаться на обучение</a>
+          </div>
         </div>
       </div>
     </section>
