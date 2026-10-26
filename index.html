@@ -199,6 +199,12 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .viewer .info h4{margin:0 0 4px;font-size:17px}
 .viewer .info p{margin:0;color:var(--muted);font-size:14px}
 
+.totop{position:fixed;z-index:40;right:max(16px,calc(env(safe-area-inset-right,0px) + 16px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
+  width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);background:rgba(13,14,16,.85);color:var(--gold-hi);display:grid;place-items:center;cursor:pointer;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s,transform .25s,background .2s,color .2s}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{background:var(--gold);color:#16120a;box-shadow:0 0 24px rgba(201,162,76,.45)}
+.totop svg{width:20px;height:20px}
 footer{border-top:1px solid var(--line);margin-top:30px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;color:var(--muted);font-size:14px}
 </style>
@@ -232,6 +238,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     <span>Telegram: @Davincer_DM</span>
   </div>
 </footer>
+
+<button class="totop" id="totop" type="button" aria-label="Наверх"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
 <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Просмотр видео">
   <div class="top">
@@ -596,6 +604,12 @@ document.addEventListener("keydown",e=>{
 let sx=null;
 stage.addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});
 stage.addEventListener("touchend",e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) step(dx<0?1:-1); sx=null; });
+
+/* --- кнопка «Наверх» --- */
+const totop=$("#totop");
+const syncTop=()=>totop.classList.toggle("show", window.scrollY>600);
+window.addEventListener("scroll",syncTop,{passive:true});
+totop.addEventListener("click",()=>{ const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches; window.scrollTo({top:0,behavior:reduce?"auto":"smooth"}); });
 
 route();
 </script>
