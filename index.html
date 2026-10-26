@@ -100,7 +100,7 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 /* category grid */
 .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 @media (max-width:1000px){.cats{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:420px){.cats{grid-template-columns:1fr}}
+
 .cat{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:168px;padding:18px;border-radius:14px;text-decoration:none;
   background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:border-color .2s,transform .2s}
 .cat::before{content:"";position:absolute;inset:0;background:var(--tone);opacity:.55;transition:opacity .3s}
@@ -218,6 +218,29 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,34px);m
 .totop svg{width:20px;height:20px}
 footer{border-top:1px solid var(--line);margin-top:30px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;color:var(--muted);font-size:14px}
+
+/* --- телефон: компактная сетка рубрик --- */
+.cat .cnt,.cat.learn-tile{display:none}
+@media (max-width:640px){
+ .hero{padding-block:24px 4px}
+ .hero .strip{display:none}
+ .hero h1{margin:10px 0 10px}
+ .hero .lead{margin-bottom:14px;font-size:16px}
+ .hero .actions{flex-wrap:nowrap;gap:8px}
+ .hero .actions .btn{flex:1;justify-content:center;padding:11px 10px;font-size:13px}
+ #portfolio{padding-block:20px}
+ #portfolio .sec-head{margin-bottom:12px}
+ #portfolio .sec-head p{display:none}
+ #portfolio h2{font-size:22px}
+ .cats{grid-template-columns:1fr 1fr;gap:8px}
+ .cat{min-height:112px;padding:12px;border-radius:12px}
+ .cat .meta,.cat p,.cat .go{display:none}
+ .cat h3{font-size:15px;white-space:normal;padding-right:0}
+ .cat .cnt{display:block;font-family:var(--mono);font-size:10px;color:#b9b6ae;letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+ .cat.learn-tile{display:flex;grid-column:span 2;min-height:80px;border-color:var(--gold)}
+ .cat.learn-tile::before{background:linear-gradient(135deg,#4b3a1a,#15120b);opacity:.9}
+ .cat.learn-tile h3{color:var(--gold-hi)}
+}
 </style>
 </head>
 <body>
@@ -499,9 +522,10 @@ function renderHome(scrollTo){
         ${PORTFOLIO.map(c=>`
           <a class="cat${c.bg?" has-bg":""}" href="#${c.id}" data-cat="${c.id}" style="--tone:${c.tone}">${c.bg?`<img class="bgimg" src="${esc(c.bg)}" alt="" loading="lazy">`:""}
             <div class="meta"><span class="ico" aria-hidden="true">${c.bg?"":(ICONS[c.id]||"")}</span><span class="side"><span class="fmt">${esc(c.fmt)}</span><span>${c.videos.length} ${plural(c.videos.length)}</span></span></div>
-            <h3>${esc(c.title)}</h3><p>${esc(c.short)}</p>
+            <h3>${esc(c.title)}</h3><div class="cnt">${c.videos.length} ${plural(c.videos.length)}</div><p>${esc(c.short)}</p>
             <span class="go">${arrowR}</span>
           </a>`).join("")}
+          <a class="cat learn-tile" href="#learn" data-home><h3>Обучение монтажу →</h3><div class="cnt">курс DaVinci Resolve · 12 уроков</div></a>
       </div>
     </section>
 
