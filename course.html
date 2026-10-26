@@ -92,6 +92,7 @@ footer a{color:var(--muted)}
   width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);background:rgba(13,14,16,.85);color:var(--gold-hi);display:grid;place-items:center;cursor:pointer;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s,transform .25s,background .2s,color .2s}
 .totop.show{opacity:1;transform:none;pointer-events:auto}
+@media (min-width:900px){.totop{right:max(24px,calc((100vw - 980px)/2 - 72px));bottom:32px}}
 .totop:hover{background:var(--gold);color:#16120a;box-shadow:0 0 24px rgba(201,162,76,.45)}
 .totop svg{width:20px;height:20px}
 </style>
