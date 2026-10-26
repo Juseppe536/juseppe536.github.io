@@ -70,7 +70,7 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1
   background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(45deg,#ffd600,#ff7a00 25%,#ff0069 55%,#d300c5 78%,#7638fa) border-box}
 .btn.ig:hover{color:#fff;background:linear-gradient(rgba(13,14,16,.6),rgba(13,14,16,.6)) padding-box,linear-gradient(45deg,#ffd600,#ff7a00 25%,#ff0069 55%,#d300c5 78%,#7638fa) border-box;box-shadow:0 0 22px rgba(255,0,105,.35)}
 .btn.ig img{width:18px;height:18px;display:block}
-@media (max-width:640px){.btn.ig{padding:0;width:42px;height:42px;justify-content:center}}
+@media (max-width:640px){header .nav:not(.links){flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px} header .nav:not(.links) .btn{justify-content:center;width:100%;padding:11px 12px}}
 header .wrap{justify-content:space-between}
 @media (max-width:640px){header .nav.links{display:none} header .wrap{justify-content:flex-end}}
 
@@ -230,7 +230,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <a class="link" href="#learn" data-home>Обучение</a>
     </nav>
     <nav class="nav">
-      <a class="btn ig" href="https://www.instagram.com/davincer_/" target="_blank" rel="noopener" aria-label="Instagram"><img src="img/instagram.png" alt="" width="18" height="18"><span class="long">Instagram</span></a>
+      <a class="btn ig" href="https://www.instagram.com/davincer_/" target="_blank" rel="noopener" aria-label="Instagram"><img src="img/instagram.png" alt="" width="18" height="18"><span>Instagram</span></a>
       <a class="btn" id="tg-btn" href="https://t.me/Davincer_DM" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.8 19c-.2 1-.8 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.7 12.9 2 11.4c-1-.3-1-1 .2-1.5L20.6 2.8c.8-.3 1.6.2 1.3 1.5z"/></svg>
         <span><span class="long">Написать в </span>Telegram</span>
