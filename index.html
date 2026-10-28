@@ -274,6 +274,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <div class="top">
     <span id="v-count">01 / 01</span>
     <div class="r">
+      <button class="icon-btn" id="v-link" aria-label="Скопировать ссылку на видео" title="Скопировать ссылку на видео"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></button>
       <button class="icon-btn" id="v-full" aria-label="Во весь экран"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
       <button class="icon-btn" id="v-close" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
@@ -545,7 +546,7 @@ function renderHome(scrollTo){
       </div>
     </section>
   </div>`;
-  app.querySelectorAll("#learn .thumb").forEach((t,i)=>t.addEventListener("click",()=>openViewer(LESSONS,i,false)));
+  app.querySelectorAll("#learn .thumb").forEach((t,i)=>t.addEventListener("click",()=>openViewer(LESSONS,i,false,undefined,"learn")));
   hydrateThumbs(app);
   if(scrollTo){ const el=document.getElementById(scrollTo); if(el) el.scrollIntoView(); } else window.scrollTo(0,0);
 }
@@ -566,7 +567,7 @@ function renderCategory(id){
       </div>`:`<div class="empty">Скоро здесь появятся работы.</div>`}
     </section>
   </div>`;
-  app.querySelectorAll(".grid .thumb").forEach((t,i)=>t.addEventListener("click",()=>openViewer(c.videos,i,!!c.vertical,c.tone)));
+  app.querySelectorAll(".grid .thumb").forEach((t,i)=>t.addEventListener("click",()=>openViewer(c.videos,i,!!c.vertical,c.tone,c.id)));
   hydrateThumbs(app);
   window.scrollTo(0,0);
 }
@@ -576,6 +577,13 @@ function plural(n){const a=n%10,b=n%100;if(a===1&&b!==11)return"видео";retu
 /* --- навигация по #якорям --- */
 function route(){
   const h = decodeURIComponent(location.hash.slice(1));
+  const m = h.match(/^(.+)-(\d+)$/);
+  if(m){
+    const n=parseInt(m[2],10)-1, c=PORTFOLIO.find(x=>x.id===m[1]);
+    if(c && c.videos[n]){ renderCategory(c.id); openViewer(c.videos,n,!!c.vertical,c.tone,c.id); return; }
+    if(m[1]==="learn" && LESSONS[n]){ renderHome("learn"); openViewer(LESSONS,n,false,undefined,"learn"); return; }
+  }
+  if(!viewer.hidden) closeViewer(true);
   if(PORTFOLIO.some(c=>c.id===h)) renderCategory(h);
   else renderHome(h==="portfolio"||h==="learn"?h:null);
 }
@@ -590,11 +598,14 @@ window.addEventListener("hashchange",route);
 /* --- полноэкранный просмотр --- */
 const viewer=$("#viewer"), stage=$("#v-stage");
 let list=[], idx=0, isVert=false, tone="";
-function openViewer(l,i,v,t){ mode="result"; list=l; idx=i; isVert=v; tone=t||"linear-gradient(135deg,#4b3a1a,#15120b)"; viewer.hidden=false; document.body.style.overflow="hidden"; show(); }
-function closeViewer(){ stage.innerHTML=""; viewer.hidden=true; document.body.style.overflow=""; if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+let vKey="";
+function setHash(h){ try{ history.replaceState(null,"",h); }catch(e){} }
+function openViewer(l,i,v,t,key){ vKey=key||""; mode="result"; list=l; idx=i; isVert=v; tone=t||"linear-gradient(135deg,#4b3a1a,#15120b)"; viewer.hidden=false; document.body.style.overflow="hidden"; show(); }
+function closeViewer(fromRoute){ stage.innerHTML=""; viewer.hidden=true; document.body.style.overflow=""; if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); if(!fromRoute && vKey) setHash("#"+vKey); }
 let mode="result";
 async function show(){
   const v=list[idx];
+  if(vKey) setHash(`#${vKey}-${idx+1}`);
   const vm=$("#v-modes"); vm.hidden=!v.process; if(!v.process) mode="result";
   vm.querySelectorAll("button").forEach(b=>{const on=b.dataset.mode===mode; b.classList.toggle("on",on); b.setAttribute("aria-selected",on);});
   const link = mode==="process"&&v.process ? v.process : v.link;
@@ -624,7 +635,10 @@ function bindArrows(){
 }
 function step(d){ idx=(idx+d+list.length)%list.length; mode="result"; show(); }
 $("#v-modes").addEventListener("click",e=>{const b=e.target.closest("button[data-mode]"); if(!b||b.dataset.mode===mode) return; mode=b.dataset.mode; show();});
-$("#v-close").onclick=closeViewer;
+$("#v-close").onclick=()=>closeViewer();
+$("#v-link").onclick=async()=>{ const url=location.href, cnt=$("#v-count"), old=cnt.textContent; let ok=false;
+  try{ await navigator.clipboard.writeText(url); ok=true; }catch(e){ try{ const ta=document.createElement("textarea"); ta.value=url; document.body.appendChild(ta); ta.select(); ok=document.execCommand("copy"); ta.remove(); }catch(_){} }
+  cnt.textContent = ok ? "Ссылка скопирована" : url; setTimeout(()=>{ if(!viewer.hidden) cnt.textContent=old; }, 2000); };
 $("#v-full").onclick=()=>{ (document.fullscreenElement?document.exitFullscreen():viewer.requestFullscreen?.())?.catch?.(()=>{}); };
 viewer.addEventListener("click",e=>{ if(e.target===stage) closeViewer(); });
 document.addEventListener("keydown",e=>{
